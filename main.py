@@ -38,8 +38,45 @@ QPushButton:hover {
 
 QPushButton:pressed {
 	top:1px;
-	background:qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #3d808c, stop: 1 #327c89);
+	background:qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #346e78, stop: 1 #22565f);
 }
+
+QListView {
+    show-decoration-selected: 1; /* make the selection span the entire width of the view */
+    font-size:15px;
+}
+QListView::item{
+
+}
+
+QListView::item:alternate {
+    background: #EEEEEE;
+
+}
+
+QListView::item:selected {
+    border: 1px solid #6a6ea9;
+
+}
+
+QListView::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #ABAFE5, stop: 1 #8588B2);
+
+}
+
+QListView::item:selected:active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #6a6ea9, stop: 1 #888dd9);
+
+}
+
+QListView::item:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #FAFBFE, stop: 1 #DCDEF1);
+ 
+}
+
 '''
 
 
@@ -69,6 +106,8 @@ class qWindow(QWidget):
         self.top_search = QLineEdit()
         self.top_search.setMaximumWidth(300)
         self.top_search_button = QPushButton("search")
+        self.top_search_button.setCheckable(True)
+        self.top_search_button.toggle()
         top_layout.addStretch()
         top_layout.addWidget(self.top_search)
         top_layout.addWidget(self.top_search_button)
@@ -79,7 +118,41 @@ class qWindow(QWidget):
         self.main_window = QWidget()
         self.main_window.setMinimumHeight(300)
         self.main_window.setMinimumWidth(1000)
+        self.main_window_layout=QHBoxLayout()
+        self.main_leftUI()
+        self.main_rightUI()
+
+        self.main_window.setLayout(self.main_window_layout)
         # self.main_window.setStyleSheet("*{background-color:qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #8bf192, stop: 1 #41c34a);}")
+
+    def main_leftUI(self):
+        scroll_left_main=QScrollArea()
+        scroll_left_main.setWidgetResizable(True)
+        self.list_widget=QListWidget()
+        self.list_widget.addItem("Item1")
+        self.list_widget.addItem("Item1")
+        self.list_widget.addItem("Item1")
+        self.list_widget.addItem("Item1")
+        self.list_widget.addItem("Item1")
+        self.list_widget.addItem("Item1")
+        scroll_left_main.setMinimumHeight(250)
+        scroll_left_main.setMaximumWidth(300)
+        self.list_widget.setMinimumWidth(250)
+        self.list_widget.setMaximumWidth(300)
+        scroll_left_main.setWidget(self.list_widget)
+        self.main_window_layout.addWidget(scroll_left_main)
+
+    def main_rightUI(self):
+        scroll_area_right=QScrollArea()
+        scroll_area_right.setWidgetResizable(True)
+        self.main_right=QWidget()
+        self.main_right.setMinimumHeight(250)
+        self.main_right.setMinimumWidth(600)
+        scroll_area_right.setMinimumHeight(250)
+        scroll_area_right.setMinimumWidth(600)
+        scroll_area_right.setWidget(self.main_right)
+        self.main_window_layout.addWidget(scroll_area_right)
+
 
 
 app = QApplication(sys.argv)
