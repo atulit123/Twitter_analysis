@@ -4,6 +4,7 @@ import pandas as pd
 import string
 import matplotlib.pyplot as plt
 import sys
+from compare import compareWindow
 with open('stylesheet.txt','r') as f:
     sheet=f.read()
 df1=pd.read_excel('data_sales.xlsx')
@@ -17,7 +18,6 @@ class qWindow(QWidget):
         self.wrap_layout.setSpacing(0)
         self.wrap_layout.setMargin(0)
         self.list_columns=list(df.columns)
-        print self.list_columns
         #print self.list_columns
         self.topUI()
         self.mainUI()
@@ -26,6 +26,7 @@ class qWindow(QWidget):
         self.setLayout(self.wrap_layout)
         #self.top_search.setAutoFillBackground(False)
         self.setStyleSheet(sheet)
+        self.compare_list=[]
         # self.wrap_layout.addLayout(self.main_layout)
 
     def topUI(self):
@@ -36,12 +37,18 @@ class qWindow(QWidget):
         self.button_predict.setMaximumWidth(200)
         self.button_compare=QPushButton("Compare")
         self.button_compare.setMaximumWidth(200)
+        self.button_compare.clicked.connect(self.compare_clicked)
         self.top_window_layout=QHBoxLayout()
         self.top_window_layout.addStretch()
         self.top_window_layout.addWidget(self.button_compare)
         self.top_window_layout.addWidget(self.button_predict)
         self.top_window_layout.addStretch()
         self.top_window.setLayout(self.top_window_layout)
+
+    def compare_clicked(self):
+        w=compareWindow(self.list_columns,df1)
+        self.compare_list.append(w)
+        w.show()
 
     def mainUI(self):
         self.main_window = QWidget()
@@ -68,9 +75,6 @@ class qWindow(QWidget):
         self.main_window_layout.addWidget(scroll_left_main)
 
     def Clicked(self,item):
-        print "hello"
-        print item.text()
-        print item.text()
         i=self.list_columns.index(item.text())
         df1_curr=pd.pivot_table(df1,index=['year'],values=[self.list_columns[i]])
         f1=plt.figure(2)
