@@ -5,11 +5,14 @@ import string
 import matplotlib.pyplot as plt
 import sys
 from compare import compareWindow
+from predict import predictWindow
 with open('stylesheet.txt','r') as f:
     sheet=f.read()
 df1=pd.read_excel('data_sales.xlsx')
 df=pd.pivot_table(df1,index=['year'])
 
+years=['2010','2011','2012','2013','2014','2015','2016']
+companies=['samsung','apple','nokia/microsoft','lg','lenovo','sony']
 
 class qWindow(QWidget):
     def __init__(self, parent=None):
@@ -35,6 +38,7 @@ class qWindow(QWidget):
         self.top_window.setMinimumHeight(150)
         self.button_predict=QPushButton("Predict")
         self.button_predict.setMaximumWidth(200)
+        self.button_predict.clicked.connect(self.predict_clicked)
         self.button_compare=QPushButton("Compare")
         self.button_compare.setMaximumWidth(200)
         self.button_compare.clicked.connect(self.compare_clicked)
@@ -47,6 +51,11 @@ class qWindow(QWidget):
 
     def compare_clicked(self):
         w=compareWindow(self.list_columns,df1)
+        self.compare_list.append(w)
+        w.show()
+
+    def predict_clicked(self):
+        w=predictWindow(companies,years)
         self.compare_list.append(w)
         w.show()
 
