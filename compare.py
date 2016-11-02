@@ -65,6 +65,8 @@ class compareWindow(QWidget):
         self.left_layout_items.addWidget(label)
 
     def compare_clicked(self):
+        if len(self.left_items_list) ==0:
+            return
         comp_wind=compareShow(self.left_items_list,self.data_ob)
         self.cb1_list=list(self.items)
         self.left_items_list=[]
