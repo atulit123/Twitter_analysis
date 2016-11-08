@@ -10,7 +10,6 @@ with open('stylesheet.txt','r') as f:
     sheet=f.read()
 df1=pd.read_excel('data_sales.xlsx')
 df=pd.pivot_table(df1,index=['year'])
-
 years=['2010','2011','2012','2013','2014','2015','2016']
 companies=['samsung','apple','nokia/microsoft','lg','lenovo','sony']
 
@@ -84,8 +83,7 @@ class qWindow(QWidget):
         self.main_window_layout.addWidget(scroll_left_main)
 
     def Clicked(self,item):
-        i=self.list_columns.index(item.text())
-        df1_curr=pd.pivot_table(df1,index=['year'],values=[self.list_columns[i]])
+        df1_curr=pd.pivot_table(df1,index=['year'],values=[str(item.text())])
         f1=plt.figure(2)
         plt.title("Data for "+item.text())
         df1_curr.plot(ax=f1.gca())
